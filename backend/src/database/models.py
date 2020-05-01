@@ -28,6 +28,77 @@ db_drop_and_create_all()
 def db_drop_and_create_all():
     db.drop_all()
     db.create_all()
+    db_init_records()
+
+def db_init_records():
+    '''this will initialize the database with some test drinks.
+
+    called on every restart, after database has been reseted by db_drop_and_create_all()
+    '''
+    new_drink1 = (Drink(
+                        id = 1,
+                        title = 'Black Coffee',
+                        recipe = """[
+                                {
+                                    "name" : "coffee",
+                                    "color": "black",
+                                    "parts": 1
+                                }
+                        ]"""
+                        ))
+
+    new_drink2 = (Drink(
+                        id = 2,
+                        title = 'Milky Coffee',
+                        recipe = """[
+                                {
+                                    "name" : "coffee",
+                                    "color": "black",
+                                    "parts": 1
+                                },
+                                {
+                                    "name": "milk",
+                                    "color": "grey",
+                                    "parts": 1
+                                }
+                        ]"""
+                        ))
+
+    new_drink3 = (Drink(
+                    id = 3,
+                    title = 'Very Milky Coffee',
+                    recipe = """[
+                            {
+                                "name" : "coffee",
+                                "color": "black",
+                                "parts": 1
+                            },
+                            {
+                                "name": "milk",
+                                "color": "grey",
+                                "parts": 2
+                            }
+                    ]"""
+                    ))
+
+    new_drink4 = (Drink(
+                id = 4,
+                title = 'Got Milk?',
+                recipe = """[
+                        {
+                            "name" : "milk",
+                            "color": "grey",
+                            "parts": 1
+                        }
+                ]"""
+                ))
+
+    new_drink1.insert()
+    new_drink2.insert()
+    new_drink3.insert()
+    new_drink4.insert()
+
+    print(new_drink4.short())
 
 '''
 Drink
