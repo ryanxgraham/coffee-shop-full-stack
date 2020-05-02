@@ -12,7 +12,6 @@ setup_db(app)
 CORS(app)
 db_drop_and_create_all()
 
-## ROUTES
 
 @app.route('/drinks', methods=['GET'])
 def get_drinks():
@@ -22,6 +21,7 @@ def get_drinks():
         "drinks": drinks
     }
     return jsonify(result)
+
 
 @app.route('/drinks-detail', methods=['GET'])
 @requires_auth('get:drinks-detail')
@@ -33,17 +33,19 @@ def get_drinks_detail(payload):
     }
     return jsonify(result)
 
+
 @app.route('/drinks', methods=['POST'])
 @requires_auth('post:drinks')
 def post_drinks(payload):
     new_drink_data = request.get_json()
-    new_drink = Drink(title=new_drink_data['title'], recipe = json.dumps(new_drink_data['recipe']))
+    new_drink = Drink(title=new_drink_data['title'], recipe=json.dumps(new_drink_data['recipe']))
     new_drink.insert()
     result = {
         "success": True,
         "drinks": new_drink.long()
     }
     return jsonify(result)
+
 
 @app.route("/drinks/<int:id>", methods=['PATCH'])
 @requires_auth("patch:drinks")
@@ -64,9 +66,10 @@ def patch_drinks(payload, id):
     change_drink.update()
 
     return jsonify({
-    'success': True,
-    'drinks': [Drink.long(change_drink)]
-    })
+                    'success': True,
+                    'drinks': [Drink.long(change_drink)]
+                    })
+
 
 @app.route("/drinks/<int:id>", methods=['DELETE'])
 @requires_auth("delete:drinks")
@@ -86,7 +89,7 @@ def delete_drinks(payload, id):
     }
     return jsonify(result)
 
-## Error Handling
+
 '''
 Example error handling for unprocessable entity
 '''
@@ -98,6 +101,7 @@ def bad_request(error):
                   "message": "bad request"
                   }), 400
 
+
 @app.errorhandler(AuthError)
 def auth_error(error):
     return jsonify({
@@ -106,6 +110,7 @@ def auth_error(error):
         "message": error.error['code']
         }), 401
 
+
 @app.errorhandler(404)
 def not_found(error):
     return jsonify({
@@ -113,6 +118,7 @@ def not_found(error):
                   "error": 404,
                   "message": "resource not found"
                   }), 404
+
 
 @app.errorhandler(422)
 def unprocessable(error):
